@@ -1,9 +1,9 @@
-laravel-mor
+laravel-bandwidth
 ======
 
 **NOTE:** This package is no longer in active development. Feel free to fork and extend it as needed.
 
-A simple Laravel interface for interacting with the morinc API.
+A simple Laravel interface for interacting with the Bandwidth API.
 
 
 # Installation
@@ -12,7 +12,7 @@ To install the package, simply add the following to your Laravel installation's 
 ```json
 "require": {
 	"laravel/framework": "5.*",
-	"blob/laravel-mor": "dev-master"
+	"blob/laravel-bandwidth": "dev-master"
 },
 ```
 
@@ -23,7 +23,7 @@ Then, add the following **Service Provider** to your `providers` array in your `
 ```php
 'providers' => array(
 	...
-	MOR\Providers\MORServiceProvider::class
+	Bandwidth\Providers\BandwidthServiceProvider::class
 );
 ```
 
@@ -32,28 +32,27 @@ From the command-line run:
 
 # Configuration
 
-Open `config/mor.php` and configure the api endpoint and credentials:
+Open `config/bandwidth.php` and configure the api endpoint and credentials:
 
 ```php
 return [
-    // API URL
-    'url'		=>	'https://mor.url.com',
+	// API URL
+	'url'		 =>	'https://test.dashboard.bandwidth.com/api',
 
     // API USERNAME
-    'username'	=>	'admin_user',
+    'username'	 =>	'admin_user',
 
     // API PASSWORD
-    'password'	=>	'password123',
+    'password'	 =>	'password123',
 
-    // API PROCESSOR
-    'processor' =>	'api2016.php',
+    // API account id
+    'account_id' =>	11554646,
 
-    // API USERNAME
     'timezone'	=>	'UTC',
 ];
 ```
 
 # Usage
 ```php
-$DIDs = MOR::getDIDs($client_id);
+//$DIDs = MOR::getDIDs($client_id);
 ```
