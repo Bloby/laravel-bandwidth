@@ -113,7 +113,7 @@ class BandwidthCore {
      */
     public function parseXML($xml)
     {
-        return new \SimpleXMLElement($xml);
+        return simplexml_load_string($xml);
     }
 
 }
