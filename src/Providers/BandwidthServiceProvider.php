@@ -1,10 +1,10 @@
 <?php
 
-namespace MOR\Providers;
+namespace Bandwidth\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-class MORServiceProvider extends ServiceProvider {
+class BandwidthServiceProvider extends ServiceProvider {
 
 	/**
 	 * Indicates if loading of the provider is deferred.
@@ -30,19 +30,19 @@ class MORServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-		$this->app->bind('mor', function($app) {
-		    return new \MOR\Bandwidth;
+		$this->app->bind('bandwidth', function($app) {
+		    return new \Bandwidth\Bandwidth;
 		});
 
 		$this->app->booting(function() {
 			$loader = \Illuminate\Foundation\AliasLoader::getInstance();
-			$loader->alias('MOR', 'MOR\Facades\MOR');
+			$loader->alias('Bandwidth', 'Bandwidth\Facades\Bandwidth');
 		});
 
-        $configPath = config_path('mor.php');
+        $configPath = config_path('bandwidth.php');
         if (!\Illuminate\Support\Facades\File::exists($configPath)) {
             $this->publishes([
-                __DIR__ . '/../config/mor.php' => $configPath
+                __DIR__ . '/../config/bandwidth.php' => $configPath
             ]);
         }
 	}
@@ -54,7 +54,7 @@ class MORServiceProvider extends ServiceProvider {
 	 */
 	public function provides()
 	{
-		return array('mor');
+		return array('bandwidth');
 	}
 
 }

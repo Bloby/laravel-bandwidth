@@ -48,47 +48,58 @@ class BandwidthCore {
     public function __construct()
     {
         $this->api_url          = config('bandwidth.url');
-        $this->account_id        = config('bandwidth.account_id');
+        $this->account_id       = config('bandwidth.account_id');
         $this->username         = config('bandwidth.username');
         $this->password         = config('bandwidth.password');
         $this->timezone         = config('bandwidth.timezone');
 
         $this->client = new Client([
             //'base_uri'  => sprintf('%s/%s', rtrim($this->api_url, '/'), ltrim($this->processor, '/')),
-            'timeout'   => config('mor.timeout')
+            'timeout'   => config('bandwidth.timeout')
         ]);
     }
 
     /**
-     * @param type 
-     * @return string
+     * @return string|integer
      */
-    public function submitGETRequest($data)
+    public function getAccountId()
     {
-        $response = $this->client->get('?', [
+        return $this->account_id;
+    }
+
+    /**
+     * @param string $method
+     * @param array $data
+     * @return object
+     */
+    public function submitGETRequest($method, $data)
+    {
+        $response = $this->client->get(sprintf('%s/%s', rtrim($this->api_url, '/'), ltrim($method, '/')), [
             'query' => $data,
             'http_errors' => true,
-            'verify' => false
+            'verify' => false,
+            'auth' => [
+                $this->username,
+                $this->password
+            ]
         ]);
 
-        return (string)$response->getBody();
+        return $this->parseXML((string)$response->getBody());
     }
 
     /**
-     * Respond to a MOR request
-     *
      * @param type
-     * @return string
+     * @return object
      */
     public function submitPOSTRequest($data)
     {
-        $response = $this->client->get('?', [
-            'query' => $data,
+        $response = $this->client->post(sprintf('%s/%s', rtrim($this->api_url, '/'), ltrim($method, '/')), [
+            'form_params' => $data,
             'http_errors' => true,
             'verify' => false
         ]);
 
-        return (string)$response->getBody();
+        return $this->parseXML((string)$response->getBody());
     }
 
     public function getDate($format = 'YM')
@@ -97,11 +108,12 @@ class BandwidthCore {
     }
 
     /**
-     * @return string sha1 hash
+     * @param string $xml
+     * @return object
      */
-    public function getDatum()
+    public function parseXML($xml)
     {
-        return sha1($this->getDate('YM') . 'm0nk3ys');
+        return new \SimpleXMLElement($xml);
     }
 
 }
