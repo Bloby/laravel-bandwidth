@@ -75,7 +75,7 @@ class BandwidthCore {
     public function submitGETRequest($method, $data)
     {
         $response = $this->client->get(sprintf('%s/%s', rtrim($this->api_url, '/'), ltrim($method, '/')), [
-            'query' => $data,
+            'query' => $this->filterData($data),
             'http_errors' => true,
             'verify' => false,
             'auth' => [
@@ -88,13 +88,14 @@ class BandwidthCore {
     }
 
     /**
-     * @param type
+     * @param $method
+     * @param $data
      * @return object
      */
-    public function submitPOSTRequest($data)
+    public function submitPOSTRequest($method, $data)
     {
         $response = $this->client->post(sprintf('%s/%s', rtrim($this->api_url, '/'), ltrim($method, '/')), [
-            'form_params' => $data,
+            'form_params' => $this->filterData($data),
             'http_errors' => true,
             'verify' => false
         ]);
@@ -114,6 +115,11 @@ class BandwidthCore {
     public function parseXML($xml)
     {
         return json_decode(json_encode(simplexml_load_string($xml)));
+    }
+
+    public function filterData($params)
+    {
+        return array_filter($params, function($value){return !is_null($value);});
     }
 
 }
