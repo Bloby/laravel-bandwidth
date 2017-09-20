@@ -13,23 +13,6 @@ class Bandwidth extends BandwidthCore {
     }
 
     /**
-     * @param $did
-     * @param $client_id
-     * @return string
-     */
-    public function checkDID($did, $client_id)
-    {
-        $data = [
-            'cmd'       => 'check_did',
-            'auth'      => $this->getDatum(),
-            'did'       => $did,
-            'client_id' => $client_id,
-        ];
-
-        return $this->submitRequest($data);
-    }
-
-    /**
      * @param string $state
      * @param bool $available
      * @param bool $supported
@@ -38,5 +21,16 @@ class Bandwidth extends BandwidthCore {
     public function getCities($state, $available = true, $supported = true)
     {
         return $this->submitGETRequest('/cities', compact(['state','available','supported']));
+    }
+
+    /**
+     * @param string $state
+     * @param bool $available
+     * @param bool $supported
+     * @return object
+     */
+    public function getRateCenters($state, $available = true, $supported = true)
+    {
+        return $this->submitGETRequest('/rateCenters', compact(['state','available','supported']));
     }
 }
