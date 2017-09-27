@@ -23,7 +23,8 @@ Then, add the following **Service Provider** to your `providers` array in your `
 ```php
 'providers' => array(
 	...
-	Bandwidth\Providers\BandwidthServiceProvider::class
+	Bandwidth\Providers\BandwidthServiceProvider::class,
+	Bandwidth\Providers\BandwidthE911ServiceProvider::class,
 );
 ```
 
@@ -49,6 +50,12 @@ return [
     'account_id' =>	11554646,
 
     'timezone'	=>	'UTC',
+    
+    'e911' => [
+        'url'       => 'https://staging-service.dashcs.com/dash-api/soap/emergencyprovisioning/v1?wsdl',
+        'login'     => 'test',
+        'password'  => 'test1111',
+    ]
 ];
 ```
 

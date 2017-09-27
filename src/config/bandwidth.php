@@ -12,5 +12,11 @@ return [
     // API account id
 	'account_id' =>	11554646,
 
-	'timezone'	=>	'UTC',
+	'timezone'	 =>	'UTC',
+
+    'e911' => [
+        'url'       => 'https://staging-service.dashcs.com/dash-api/soap/emergencyprovisioning/v1?wsdl',
+        'login'     => 'test',
+        'password'  => 'test1111',
+    ]
 ];
