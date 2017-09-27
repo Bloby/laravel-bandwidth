@@ -114,7 +114,7 @@ class Bandwidth extends BandwidthCore {
      * @param string|null $tn
      * @return object
      */
-    public function submitGETRequest($aeui, $callBack = null, $createdDateFrom = null, $createdDateTo = null, $customerOrderId = null, $lastModifiedAfter = null, $lastModifiedBy = null, $modifiedDateFrom = null, $modifiedDateTo = null, $orderDetails = null, $orderIdFragment = null, $status = null, $tn = null)
+    public function e911sList($aeui, $callBack = null, $createdDateFrom = null, $createdDateTo = null, $customerOrderId = null, $lastModifiedAfter = null, $lastModifiedBy = null, $modifiedDateFrom = null, $modifiedDateTo = null, $orderDetails = null, $orderIdFragment = null, $status = null, $tn = null)
     {
         return $this->submitPOSTRequest(
             sprintf('/accounts/%s/e911s', $this->getAccountId()),
