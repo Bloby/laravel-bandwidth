@@ -90,6 +90,25 @@ class BandwidthCore {
     /**
      * @param $method
      * @param $data
+     * @param $raw
+     * @return object
+     */
+    public function submitPOSTRawRequest($method, $data, $raw)
+    {
+        $response = $this->client->post(sprintf('%s/%s', rtrim($this->api_url, '/'), ltrim($method, '/')), [
+            'query' => $this->filterData($data),
+            'headers' => ['Content-Type' => 'application/xml'],
+            'body' => $raw,
+            'http_errors' => true,
+            'verify' => false
+        ]);
+
+        return $this->parseXML((string)$response->getBody());
+    }
+
+    /**
+     * @param $method
+     * @param $data
      * @return object
      */
     public function submitPOSTRequest($method, $data)

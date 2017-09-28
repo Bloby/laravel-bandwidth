@@ -63,6 +63,19 @@ class Bandwidth extends BandwidthCore {
     }
 
     /**
+     * @param string|bool $fullCheck one of (true, false, onnetportability, offnetportability), default: false
+     * @return object
+     */
+    public function lnpchecker($fullCheck, $xml)
+    {
+        return $this->submitPOSTRawRequest(
+            sprintf('/accounts/%s/lnpchecker', $this->getAccountId()),
+            compact(['fullCheck']),
+            $xml
+        );
+    }
+
+    /**
      * @param array|null $TelephoneNumbers [TelephoneNumber][]
      * @param string|null $CallerName
      * @param array|null $Address
