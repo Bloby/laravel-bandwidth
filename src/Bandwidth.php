@@ -64,14 +64,21 @@ class Bandwidth extends BandwidthCore {
 
     /**
      * @param string|bool $fullCheck one of (true, false, onnetportability, offnetportability), default: false
+     * @param array $tns
      * @return object
      */
-    public function lnpchecker($fullCheck, $xml)
+    public function lnpchecker($fullCheck, $tns)
     {
+        $xml = '<NumberPortabilityRequest><TnList>%s</TnList></NumberPortabilityRequest>';
+        $list = '';
+        foreach ($tns as $tn) {
+            $list .= sprintf('<Tn>%s</Tn>', $tn);
+        }
+
         return $this->submitPOSTRawRequest(
             sprintf('/accounts/%s/lnpchecker', $this->getAccountId()),
             compact(['fullCheck']),
-            $xml
+            sprintf($xml, $list)
         );
     }
 
