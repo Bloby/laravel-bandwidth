@@ -74,7 +74,6 @@ class Bandwidth extends BandwidthCore {
         foreach ($tns as $tn) {
             $list .= sprintf('<Tn>%s</Tn>', $tn);
         }
-
         return $this->submitPOSTRawRequest(
             sprintf('/accounts/%s/lnpchecker', $this->getAccountId()),
             compact(['fullCheck']),
