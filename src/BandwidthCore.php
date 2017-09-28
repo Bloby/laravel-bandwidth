@@ -100,7 +100,11 @@ class BandwidthCore {
             'headers' => ['Content-Type' => 'application/xml'],
             'body' => $raw,
             'http_errors' => true,
-            'verify' => false
+            'verify' => false,
+            'auth' => [
+                $this->username,
+                $this->password
+            ]
         ]);
 
         return $this->parseXML((string)$response->getBody());
@@ -116,7 +120,11 @@ class BandwidthCore {
         $response = $this->client->post(sprintf('%s/%s', rtrim($this->api_url, '/'), ltrim($method, '/')), [
             'form_params' => $this->filterData($data),
             'http_errors' => true,
-            'verify' => false
+            'verify' => false,
+            'auth' => [
+                $this->username,
+                $this->password
+            ]
         ]);
 
         return $this->parseXML((string)$response->getBody());
