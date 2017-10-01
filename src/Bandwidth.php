@@ -202,6 +202,17 @@ class Bandwidth extends BandwidthCore {
     }
 
     /**
+     * @return object
+     */
+    public function sites()
+    {
+        return $this->submitGETRequest(
+            sprintf('/accounts/%s/sites', $this->getAccountId()),
+            []
+        );
+    }
+
+    /**
      * @param array|null $TelephoneNumbers [TelephoneNumber][]
      * @param string|null $CallerName
      * @param array|null $Address
