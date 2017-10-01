@@ -82,6 +82,126 @@ class Bandwidth extends BandwidthCore {
     }
 
     /**
+     * @param string $LoaAuthorizingPerson
+     * @param string $BillingTelephoneNumber
+     * @param array $ListOfPhoneNumbers
+     * @param string $SiteId
+     * @param string $SubscriberType
+     * @param string $HouseNumber
+     * @param string $StreetName
+     * @param string $City
+     * @param integer $Zip
+     * @param string $StateCode
+     * @param string|null $County
+     * @param string|null $PeerId
+     * @param string|null $RequestedFocDate
+     * @param string|null $AlternateSpid
+     * @param string|null $FirstName
+     * @param string|null $LastName
+     * @return object
+     */
+    public function portinsCreate(
+        $LoaAuthorizingPerson, $BillingTelephoneNumber, $ListOfPhoneNumbers, $SiteId, $SubscriberType, $HouseNumber,
+        $StreetName, $City, $Zip, $StateCode, $County = null, $PeerId = null, $RequestedFocDate = null, $AlternateSpid = null,
+        $FirstName = null, $LastName = null
+    )
+    {
+        $xml = '<LnpOrder>%s</LnpOrder>';
+/*`<LnpOrder>
+    <RequestedFocDate>2016-03-25T21:15:00.000Z</RequestedFocDate>
+    <!-- OPTIONAL -->
+    <AlternateSpid>X455</AlternateSpid>
+    <!-- OPTIONAL -->
+    <BillingTelephoneNumber>9195551234</BillingTelephoneNumber>
+    <SiteId>    SITE ID     </SiteId>
+    <PeerId>  SIPPEER ID    </PeerId>
+    <Subscriber>
+        <SubscriberType>BUSINESS</SubscriberType>
+        <FirstName>First</FirstName>
+        <LastName>Last</LastName>
+        <ServiceAddress>
+            <HouseNumber>11235</HouseNumber>
+            <StreetName>Back</StreetName>
+            <City>Denver</City>
+            <StateCode>CO</StateCode>
+            <Zip>27541</Zip>
+            <County>Canyon</County>
+        </ServiceAddress>
+    </Subscriber>
+    <LoaAuthorizingPerson>The Authguy</LoaAuthorizingPerson>
+    <WirelessInfo>
+        <AccountNumber>771297665AABC</AccountNumber>
+        <PinNumber>1234</PinNumber>
+    </WirelessInfo>
+    <TnAttributes>
+        <TnAttribute>Protected</TnAttribute>
+    </TnAttributes>
+    <ListOfPhoneNumbers>
+        <PhoneNumber>9194809871</PhoneNumber>
+    </ListOfPhoneNumbers>
+    <Triggered>true</Triggered>
+    <BillingType>PORTIN</BillingType>
+</LnpOrder>`;*/
+        $list = '';
+
+        $list .= sprintf('<BillingTelephoneNumber>%s</BillingTelephoneNumber>', $BillingTelephoneNumber);
+        $list .= sprintf('<SiteId>%s</SiteId>', $SiteId);
+
+        if ($PeerId !== null) {
+            $list .= sprintf('<PeerId>%s</PeerId>', $PeerId);
+        }
+
+        if ($RequestedFocDate !== null) {
+            $list .= sprintf('<RequestedFocDate>%s</RequestedFocDate>', $RequestedFocDate);
+        }
+
+        if ($AlternateSpid !== null) {
+            $list .= sprintf('<AlternateSpid>%s</AlternateSpid>', $AlternateSpid);
+        }
+
+        $Subscriber = '';
+        $Subscriber .= sprintf('<SubscriberType>%s</SubscriberType>', $SubscriberType);
+
+        if ($FirstName !== null) {
+            $Subscriber .= sprintf('<FirstName>%s</FirstName>', $FirstName);
+        }
+
+        if ($LastName !== null) {
+            $Subscriber .= sprintf('<LastName>%s</LastName>', $LastName);
+        }
+
+        $ServiceAddress = '';
+        $ServiceAddress .= sprintf('<HouseNumber>%s</HouseNumber>', $HouseNumber);
+        $ServiceAddress .= sprintf('<StreetName>%s</StreetName>', $StreetName);
+        $ServiceAddress .= sprintf('<City>%s</City>', $City);
+        $ServiceAddress .= sprintf('<StateCode>%s</StateCode>', $StateCode);
+        $ServiceAddress .= sprintf('<Zip>%s</Zip>', $Zip);
+        if ($County !== null) {
+            $ServiceAddress .= sprintf('<County>%s</County>', $County);
+        }
+        $Subscriber .= sprintf('<ServiceAddress>%s</ServiceAddress>', $ServiceAddress);
+
+        $list .= sprintf('<Subscriber>%s</Subscriber>', $Subscriber);
+
+        $list .= sprintf('<LoaAuthorizingPerson>%s</LoaAuthorizingPerson>', $LoaAuthorizingPerson);
+        $list .= '<TnAttributes><TnAttribute>Protected</TnAttribute></TnAttributes>';
+
+        $ListTNs = '';
+        foreach ($ListOfPhoneNumbers as $tn) {
+            $ListTNs .= sprintf('<PhoneNumber>%s</PhoneNumber>', $tn);
+        }
+        $list .= sprintf('<ListOfPhoneNumbers>%s</ListOfPhoneNumbers>', $ListTNs);
+        $list .= '<Triggered>false</Triggered>';
+        $list .= '<BillingType>PORTIN</BillingType>';
+
+        return $this->submitPOSTRawRequest(
+            sprintf('/accounts/%s/portins', $this->getAccountId()),
+            [],
+            sprintf($xml, $list)
+        );
+    }
+
+    /**
      * @param array|null $TelephoneNumbers [TelephoneNumber][]
      * @param string|null $CallerName
      * @param array|null $Address
