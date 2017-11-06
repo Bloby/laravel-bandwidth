@@ -271,4 +271,55 @@ class Bandwidth extends BandwidthCore {
             compact(['aeui','callBack','createdDateFrom','createdDateTo','customerOrderId','lastModifiedAfter','lastModifiedBy','modifiedDateFrom','modifiedDateTo','orderDetails','orderIdFragment','status','tn'])
         );
     }
+
+    /**
+     * @param string $Action should be: ASSIGN | UNASSIGN
+     * @param string|integer $CustomerOrderId
+     * @param array|integer|string $TelephoneNumbers
+     * @return object
+     */
+    public function numbersAssignment($Action, $CustomerOrderId, $TelephoneNumbers)
+    {
+        $xml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
+        $xml .= '<TelephoneNumbersAssignmentOrder>';
+        $xml .= sprintf('<CustomerOrderId>%s</CustomerOrderId>', $CustomerOrderId);
+        $xml .= sprintf('<Action>%s</Action>', $Action);
+        $xml .= '<TelephoneNumbers>';
+        if (is_array($TelephoneNumbers)) {
+            foreach ($TelephoneNumbers as $TelephoneNumber) {
+                $xml .= sprintf('<TelephoneNumber>%s</TelephoneNumber>', $TelephoneNumber);
+            }
+        }
+        else {
+            $xml .= sprintf('<TelephoneNumber>%s</TelephoneNumber>', $TelephoneNumbers);
+        }
+        $xml .= '</TelephoneNumbers>';
+        $xml .= '</TelephoneNumbersAssignmentOrder>';
+
+        return $this->submitPOSTRawRequest(
+            sprintf('/accounts/%s/numbersAssignment', $this->getAccountId()),
+            [],
+            $xml
+        );
+    }
+
+    /**
+     * @param string|integer $CustomerOrderId
+     * @param array|integer|string $TelephoneNumbers
+     * @return object
+     */
+    public function assignNumber($CustomerOrderId, $TelephoneNumbers)
+    {
+        return $this->numbersAssignment('ASSIGN', $CustomerOrderId, $TelephoneNumbers);
+    }
+
+    /**
+     * @param string|integer $CustomerOrderId
+     * @param array|integer|string $TelephoneNumbers
+     * @return object
+     */
+    public function unassignNumber($CustomerOrderId, $TelephoneNumbers)
+    {
+        return $this->numbersAssignment('UNASSIGN', $CustomerOrderId, $TelephoneNumbers);
+    }
 }
