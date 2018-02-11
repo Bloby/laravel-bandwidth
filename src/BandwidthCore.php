@@ -99,7 +99,7 @@ class BandwidthCore {
             'query' => $this->filterData($data),
             'headers' => ['Content-Type' => 'application/xml'],
             'body' => $raw,
-            'http_errors' => true,
+            'http_errors' => false,
             'verify' => false,
             'auth' => [
                 $this->username,
