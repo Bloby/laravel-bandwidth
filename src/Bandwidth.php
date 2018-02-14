@@ -322,4 +322,117 @@ class Bandwidth extends BandwidthCore {
     {
         return $this->numbersAssignment('UNASSIGN', $CustomerOrderId, $TelephoneNumbers);
     }
+
+    /**
+     * @param string $Name
+     * @param string|integer $SiteId
+     * @param string|integer $CustomerOrderId
+     * @param array|integer|string $TelephoneNumberList
+     * @param array|integer|string $ReservationIdList
+     * @return object
+     */
+    public function orders($Name, $SiteId, $CustomerOrderId, $TelephoneNumberList = [], $ReservationIdList = [])
+    {
+        /*
+<Order>
+ <Name>Available Telephone Number order</Name>
+ <SiteId>461</SiteId>
+ <CustomerOrderId>SJMres001</CustomerOrderId>
+ <ExistingTelephoneNumberOrderType>
+
+     <TelephoneNumberList>
+         <TelephoneNumber>7034343704</TelephoneNumber>
+         <TelephoneNumber>5405514342</TelephoneNumber>
+     </TelephoneNumberList>
+
+     <ReservationIdList>
+         <ReservationId>3150268b-b7e8-421f-8cc8-9ad9f2e8fd24</ReservationId>
+         <ReservationId>8dddbd6f-77ca-4a17-97ca-83d334fc404e</ReservationId>
+     </ReservationIdList>
+
+ </ExistingTelephoneNumberOrderType>
+</Order>
+        */
+        $xml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
+        $xml .= '<Order>';
+        $xml .= sprintf('<Name>%s</Name>', $Name);
+        $xml .= sprintf('<SiteId>%s</SiteId>', $SiteId);
+        $xml .= sprintf('<CustomerOrderId>%s</CustomerOrderId>', $CustomerOrderId);
+        $xml .= '<ExistingTelephoneNumberOrderType>';
+
+        if (!empty($TelephoneNumberList)) {
+            $xml .= '<TelephoneNumberList>';
+            if (is_array($TelephoneNumberList)) {
+                foreach ($TelephoneNumberList as $TelephoneNumber) {
+                    $xml .= sprintf('<TelephoneNumber>%s</TelephoneNumber>', $TelephoneNumber);
+                }
+            } else {
+                $xml .= sprintf('<TelephoneNumber>%s</TelephoneNumber>', $TelephoneNumberList);
+            }
+            $xml .= '</TelephoneNumberList>';
+        }
+
+        if (!empty($ReservationIdList)) {
+            $xml .= '<ReservationIdList>';
+            if (is_array($ReservationIdList)) {
+                foreach ($ReservationIdList as $ReservationId) {
+                    $xml .= sprintf('<ReservationId>%s</ReservationId>', $ReservationId);
+                }
+            } else {
+                $xml .= sprintf('<ReservationId>%s</ReservationId>', $ReservationIdList);
+            }
+            $xml .= '</ReservationIdList>';
+        }
+
+        $xml .= '</ExistingTelephoneNumberOrderType>';
+        $xml .= '</Order>';
+
+        return $this->submitPOSTRawRequest(
+            sprintf('/accounts/%s/orders', $this->getAccountId()),
+            [],
+            $xml
+        );
+    }
+
+    /**
+     * @param string|integer $orderid
+     * @return object
+     */
+    public function getOrder($orderid)
+    {
+        return $this->submitGETRequest(
+            sprintf('/accounts/%s/orders/%s', $this->getAccountId(), $orderid),
+            []
+        );
+    }
+
+    /**
+     * @param string|integer $orderid
+     * @param string $Name
+     * @param string|integer $CustomerOrderId
+     * @param bool $CloseOrder
+     * @return object
+     */
+    public function order($orderid, $Name, $CustomerOrderId, $CloseOrder)
+    {
+        /*
+<Order>
+    <Name>Available Telephone Number order</Name>
+    <CustomerOrderId>123456789</CustomerOrderId>
+    <CloseOrder>true</CloseOrder>
+</Order>
+        */
+        $xml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
+        $xml .= '<Order>';
+        $xml .= sprintf('<Name>%s</Name>', $Name);
+        $xml .= sprintf('<CustomerOrderId>%s</CustomerOrderId>', $CustomerOrderId);
+        $xml .= sprintf('<CloseOrder>%s</CloseOrder>', $CloseOrder ? 'true' : 'false');
+        $xml .= '</Order>';
+
+        return $this->submitPOSTRawRequest(
+            sprintf('/accounts/%s/orders/%s', $this->getAccountId(), $orderid),
+            [],
+            $xml
+        );
+    }
 }
