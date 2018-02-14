@@ -91,9 +91,10 @@ class BandwidthCore {
      * @param $method
      * @param $data
      * @param $raw
-     * @return object
+     * @param $decode
+     * @return object|string
      */
-    public function submitPOSTRawRequest($method, $data, $raw)
+    public function submitPOSTRawRequest($method, $data, $raw, $decode = true)
     {
         $response = $this->client->post(sprintf('%s/%s', rtrim($this->api_url, '/'), ltrim($method, '/')), [
             'query' => $this->filterData($data),
@@ -107,7 +108,7 @@ class BandwidthCore {
             ]
         ]);
 
-        return $this->parseXML((string)$response->getBody());
+        return $decode ? $this->parseXML((string)$response->getBody()) : (string)$response->getBody();
     }
 
     /**
