@@ -76,7 +76,7 @@ class BandwidthCore {
     {
         $response = $this->client->get(sprintf('%s/%s', rtrim($this->api_url, '/'), ltrim($method, '/')), [
             'query' => $this->filterData($data),
-            'http_errors' => true,
+            'http_errors' => false,
             'verify' => false,
             'auth' => [
                 $this->username,
@@ -119,7 +119,7 @@ class BandwidthCore {
     {
         $response = $this->client->post(sprintf('%s/%s', rtrim($this->api_url, '/'), ltrim($method, '/')), [
             'form_params' => $this->filterData($data),
-            'http_errors' => true,
+            'http_errors' => false,
             'verify' => false,
             'auth' => [
                 $this->username,
