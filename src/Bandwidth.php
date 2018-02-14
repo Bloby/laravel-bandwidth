@@ -455,7 +455,8 @@ class Bandwidth extends BandwidthCore {
         return $this->submitPOSTRawRequest(
             sprintf('/accounts/%s/tnreservation', $this->getAccountId()),
             [],
-            $xml
+            $xml,
+            false
         );
     }
 }
