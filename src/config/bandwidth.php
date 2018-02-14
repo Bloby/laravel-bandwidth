@@ -12,6 +12,8 @@ return [
     // API account id
 	'account_id' =>	11554646,
 
+	'location_id'=> 11554646,
+
 	'timezone'	 =>	'UTC',
 
     'e911' => [
