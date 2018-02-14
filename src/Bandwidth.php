@@ -435,4 +435,27 @@ class Bandwidth extends BandwidthCore {
             $xml
         );
     }
+
+    /**
+     * @param string|integer $ReservedTn
+     * @return object
+     */
+    public function tnreservation($ReservedTn)
+    {
+        /*
+<Reservation>
+ <ReservedTn>5405514342</ReservedTn>
+</Reservation>
+        */
+        $xml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
+        $xml .= '<Reservation>';
+        $xml .= sprintf('<ReservedTn>%s</ReservedTn>', $ReservedTn);
+        $xml .= '</Reservation>';
+
+        return $this->submitPOSTRawRequest(
+            sprintf('/accounts/%s/tnreservation', $this->getAccountId()),
+            [],
+            $xml
+        );
+    }
 }
