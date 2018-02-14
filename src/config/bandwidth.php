@@ -1,20 +1,22 @@
 <?php
 return [
 	// API URL
-	'url'		 =>	'https://test.dashboard.bandwidth.com/api',
+	'url'		        =>	'https://test.dashboard.bandwidth.com/api',
 
     // API USERNAME
-    'username'	 =>	'admin_user',
+    'username'	        =>	'admin_user',
 
     // API PASSWORD
-    'password'	 =>	'password123',
+    'password'	        =>	'password123',
 
     // API account id
-	'account_id' =>	11554646,
+	'account_id'        =>	11554646,
 
-	'location_id'=> 11554646,
+	'sub_account_id'    => 11554646,
 
-	'timezone'	 =>	'UTC',
+	'location_id'       => 11554646,
+
+	'timezone'	        =>	'UTC',
 
     'e911' => [
         'url'       => 'https://staging-service.dashcs.com/dash-api/soap/emergencyprovisioning/v1?wsdl',

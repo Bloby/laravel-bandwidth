@@ -326,12 +326,13 @@ class Bandwidth extends BandwidthCore {
     /**
      * @param string $Name
      * @param string|integer $SiteId
+     * @param string|integer $PeerId
      * @param string|integer $CustomerOrderId
      * @param array|integer|string $TelephoneNumberList
      * @param array|integer|string $ReservationIdList
      * @return object
      */
-    public function orders($Name, $SiteId, $CustomerOrderId, $TelephoneNumberList = [], $ReservationIdList = [])
+    public function orders($Name, $SiteId, $PeerId, $CustomerOrderId, $TelephoneNumberList = [], $ReservationIdList = [])
     {
         /*
 <Order>
@@ -357,6 +358,7 @@ class Bandwidth extends BandwidthCore {
         $xml .= '<Order>';
         $xml .= sprintf('<Name>%s</Name>', $Name);
         $xml .= sprintf('<SiteId>%s</SiteId>', $SiteId);
+        $xml .= sprintf('<PeerId>%s</PeerId>', $PeerId);
         $xml .= sprintf('<CustomerOrderId>%s</CustomerOrderId>', $CustomerOrderId);
         $xml .= '<ExistingTelephoneNumberOrderType>';
 
