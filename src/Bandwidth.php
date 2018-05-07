@@ -464,7 +464,7 @@ class Bandwidth extends BandwidthCore {
 
     /**
      * @param string $Name The name of the order. Max length restricted to 50 characters
-     * @param array $TelephoneNumberList A list of telephone numbers to disconnect.
+     * @param array|string $TelephoneNumberList A list of telephone numbers to disconnect.
      * @param string $Protected Change protected status of telephones during disconnection. Optional parameter. Possible values: TRUE, FALSE, UNCHANGED. Typically UNCHANGED.
      * @return object
      */
@@ -490,8 +490,13 @@ class Bandwidth extends BandwidthCore {
         $xml .= sprintf('<name>%s</name>', $Name);
         $xml .= '<DisconnectTelephoneNumberOrderType>';
             $xml .= '<TelephoneNumberList>';
-            foreach ($TelephoneNumberList as $number) {
-                $xml .= sprintf('<TelephoneNumber>%s</TelephoneNumber>', $number);
+            if (is_array($TelephoneNumberList)) {
+                foreach ($TelephoneNumberList as $number) {
+                    $xml .= sprintf('<TelephoneNumber>%s</TelephoneNumber>', $number);
+                }
+            }
+            else {
+                $xml .= sprintf('<TelephoneNumber>%s</TelephoneNumber>', $TelephoneNumberList);
             }
             $xml .= '</TelephoneNumberList>';
             $xml .= sprintf('<Protected>%s</Protected>', $Protected);
