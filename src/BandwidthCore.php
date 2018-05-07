@@ -5,8 +5,8 @@ namespace Bandwidth;
 use GuzzleHttp\Client;
 use Carbon\Carbon;
 
-class BandwidthCore {
-        
+class BandwidthCore
+{
     /**
      * @var \GuzzleHttp\Client
      */

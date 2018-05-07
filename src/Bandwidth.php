@@ -461,4 +461,49 @@ class Bandwidth extends BandwidthCore {
             false
         );
     }
+
+    /**
+     * @param string $Name The name of the order. Max length restricted to 50 characters
+     * @param array $TelephoneNumberList A list of telephone numbers to disconnect.
+     * @param string $Protected Change protected status of telephones during disconnection. Optional parameter. Possible values: TRUE, FALSE, UNCHANGED. Typically UNCHANGED.
+     * @return object
+     */
+    public function disconnects($Name, $TelephoneNumberList = [], $Protected = 'UNCHANGED')
+    {
+        /*
+        <?xml version="1.0"?>
+<DisconnectTelephoneNumberOrder>
+    <name>training run</name>
+    <DisconnectTelephoneNumberOrderType>
+        <TelephoneNumberList>
+            <TelephoneNumber>4158714245</TelephoneNumber>
+            <TelephoneNumber>4352154439</TelephoneNumber>
+            <TelephoneNumber>4352154466</TelephoneNumber>
+        </TelephoneNumberList>
+        <Protected>UNCHANGED</Protected>
+    </DisconnectTelephoneNumberOrderType>
+</DisconnectTelephoneNumberOrder>
+        */
+
+        $xml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
+        $xml .= '<DisconnectTelephoneNumberOrder>';
+        $xml .= sprintf('<name>%s</name>', $Name);
+        $xml .= '<DisconnectTelephoneNumberOrderType>';
+            $xml .= '<TelephoneNumberList>';
+            foreach ($TelephoneNumberList as $number) {
+                $xml .= sprintf('<TelephoneNumber>%s</TelephoneNumber>', $number);
+            }
+            $xml .= '</TelephoneNumberList>';
+            $xml .= sprintf('<Protected>%s</Protected>', $Protected);
+        $xml .= '</DisconnectTelephoneNumberOrderType>';
+        $xml .= '</DisconnectTelephoneNumberOrder>';
+
+        return $this->submitPOSTRawRequest(
+            sprintf('/accounts/%s/disconnects', $this->getAccountId()),
+            [],
+            $xml,
+            false
+        );
+    }
+
 }
